@@ -1,0 +1,122 @@
+#account_page {
+    width: 100%;
+    height: 100%;
+    margin-top: 5%;
+    float: left;
+    color: #ffe900;
+}
+
+#title {
+    font-family: sanitarium, monospace;
+    font-size: 1.7em;
+    text-align: center;
+}
+
+#left_panel {
+    float: left;
+    width: 45%;
+    height: 100%;
+    margin-top: 2%;
+}
+
+#ranking {
+    float: left;
+    width: 25%;
+    height: 100%;
+    margin-left: 5%;
+    margin-top: 5%;
+
+    background-color: #0e53a7;
+    border: 5px solid #1478f1;
+    border-radius: 20px;
+}
+
+#scorebox {
+    float: left;
+    text-align: center;
+    border: 5px solid #de0052;
+    border-radius: 20px;
+    
+    background-color: #8b0034;
+    
+    width: 15%;
+    height: 90%;
+    margin-left: 5%;
+    margin-top: 10%;
+}
+
+#score {
+    margin-bottom: 15px;
+    font-size: 2.9em;
+}
+
+input[type="text"] {
+    background-color: black;
+    font-size: 1.2em;
+    color: #ffe900;
+    width: 300px;
+}
+
+#first_name, #last_name {
+    margin-left: 50px;
+}
+
+#troupe_form {
+    float: left;
+}
+
+#troupe_form button {
+    float: left;
+
+}
+
+#switch_img {
+    height: 20px;
+    border: none;
+}
+
+#account_page img:hover {
+    cursor: pointer;
+    border: none;
+}
+
+#ranking p {
+    margin-left: 20px;
+}
+
+#update_img {
+    margin-left: 40%;
+    height: 30px;
+    border: none;
+}
+
+#first_account_page {
+    width: 100%;
+
+}
+
+#welcome_img {
+    height: 70px;
+    margin-top: 5%;
+    margin-left: 38%;
+    border: none;
+}
+
+#first_account_form {
+    margin-left: 30%;
+}
+
+#first_account_page p {
+    text-align: center;
+}
+
+#save_img {
+    height: 50px;
+    margin-left: 43%;
+    border: none;
+}
+
+#save_img:hover {
+    cursor: pointer;
+    border: none;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Trivbot</title>
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/{{CSS_FILE|escape}}.css" />
+    
+        <script src="js/main.js"></script>
+        <script src="js/{{JS_FILE|escape}}.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="http://www.getwillet.com/dynamic/js/willet.js" type="text/javascript"></script>
+    </head>
+
+    <body onload="colourTitle();">
+        <a href="/"><img id="corner_logo" src="/images/logo_45_bot.png"></img></a>
+        <a id="question_link" href="/willet"> <img id="question_img" src="/images/today_question.png"></img></a>
+        <a id="account_link" href="/account" ><img id="account_img" src="/images/account.png"></img></a>
+        <a id="about_link" href="/about"><img id="about_img" src="/images/about.png"></img></a>
+        <a href="{{LOGOUT_URL|escape}}"><img id="logout" src="/images/logout.png"></img></a>
+
+        <div id="content">
+            {{CONTENT}}
+        </div>
+
+        <div id="footer" >
+            <div id="challenge_link">
+                <form name="invite_form" action="/invite" method="post">
+                    <object>Challenge A Friend:</object> 
+                    <input type="text" id="invite" onKeyPress="return maybeSubmit(this, event);" value="daily.triv.bot@gmail.com"> </input>
+                    <img src="images/challenge.png" onClick="invite( );"> </img>
+                </form>
+            </div>
+
+            <div id="powered_link">
+                <a href="http://www.getwillet.com">Powered by Willet</a>
+            </div>
+        </div>
+    </body>
+</html>
+

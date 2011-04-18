@@ -1,0 +1,46 @@
+#question_page {
+    font-size: 1.2em;
+    width: 100%;
+    text-align: center;
+}
+
+#question_page #today {
+    font-size: 1.9em;
+    padding-top: 7%;
+}
+
+#question {
+    margin-top: 0%;
+    padding-top: 0%;
+}
+
+#answers {
+    float: left;
+    text-align: left;
+    width: 50%;
+    margin-left: 12%;
+}
+
+#lower {
+    width: 100%;
+    float: left;
+}
+
+#submit {
+    text-align: center;
+    margin-left: 23%;
+}
+
+input[type="radio"] {
+    font-size: 2.9em;
+}
+
+#cntdwn {
+    float: left;
+    font-family: sanitarium, monospace;
+    text-align: center;
+    font-size: 4.5em;
+    width: 20%;
+    margin-left: 5%;
+    margin-top: 5%;
+}

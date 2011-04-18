@@ -1,0 +1,34 @@
+#willet_page {
+    font-family: sanitarium, monospace;
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 2.3em;
+}
+
+#left {
+    width: 31%;
+    float: left;
+    margin-top: 15%;
+}
+
+#iframe_middle {
+    width: 32%;
+    float: left;
+    margin-top: 10%;
+    padding-right: 3%;
+}
+
+#right {
+    width: 34%;
+    float: right;
+    margin-top: 15%;
+}
+
+#bottom {
+    width: 100%;
+    float: bottom;
+    margin-top: 39%;
+    font-size: 0.7em;
+}
+

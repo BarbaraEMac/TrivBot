@@ -1,0 +1,53 @@
+#about_page {
+    font-size: 1.0em;
+    float: left;
+    width: 100%;
+    margin-top: 5%;
+}
+
+#how_div h2 {
+    font-size: 1.6em;
+    float: left;
+}
+
+#title_img {
+    height: 29px;
+    float: left;
+    margin-top: 2%;
+    margin-left: 7px;
+    border: none;
+}
+#how_div {
+    float: left;
+    width: 66%;
+}
+
+#who_div {
+    border: 5px solid #de0052;
+    border-radius: 10px;
+    background-color: #8b0034;
+    
+    width: 30%;
+    margin-top: 1%;
+    margin-right: 2%;
+    
+    float: right;
+    text-align: center;
+}
+
+#feedback {
+    width: 95%;
+    height: 100px;
+    background-color: #de0052;
+    color: yellow;
+
+}
+
+#who_div h2{
+    text-align: center;
+    font-size: 1.6em;
+}
+
+img {
+    border: none;
+}

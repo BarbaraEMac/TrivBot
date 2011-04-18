@@ -1,0 +1,13 @@
+cron:
+ - description: Update the question
+   url: /cron/updateQuestion
+   schedule: every mon,tue,wed,thu,fri 00:00
+   timezone: America/Toronto
+ - description: Send out emails
+   url: /cron/sendEmails
+   schedule: every mon,tue,wed,thu,fri 08:00
+   timezone: America/Toronto
+ - description: Clear empty troupes
+   url: /cron/clearTroupes
+   schedule: every mon,tue,wed,thu,fri,sat,sun 04:00
+   timezone: America/Toronto

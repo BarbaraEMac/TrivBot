@@ -1,0 +1,31 @@
+<div id="result_page">
+    <h1> Results </h1>
+
+    <p>
+    {% if already_played %}
+        You've already played today!</p>
+        <p>Please come back tomorrow to play again.</p>
+        <p>Today's question is <br />"{{question|escape}}" <br />and the answer is <br />"{{answer|escape}}".</p>
+
+    {% else %}
+
+        {% ifequal q_score 2 %}
+            Correct! You earned {{q_score|escape}} points.
+        {% else %}
+            {% ifequal q_score 1 %}
+                Hey, at least you didn't <b>lose</b> any points. You can do better, though. 
+            {% else %}
+                Too bad! Better luck next time. You've lost 1 point.
+            {% endifequal %}
+            </p><p>
+
+            The correct answer was "{{answer|escape}}".
+        
+        {% endifequal %}
+
+    </p>
+
+    <p>Your total score for this month is {{score|escape}}.</p>
+    
+    {% endif %}
+</div>

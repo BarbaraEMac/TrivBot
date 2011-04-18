@@ -1,0 +1,25 @@
+<div id="question_page">
+
+    <h2 id="today"> {{TODAY|escape|escape}} </h2>
+
+    <div id="question">
+        {{q.question|escape}}
+    </div>
+
+    <div id="lower">
+        <div id="cntdwn">
+            Ready ... GO!
+        </div>
+
+        <div id="answers">
+            <form id="question_form" action="/answerQuestion" method="post">
+                <p><input type="radio" name="q1" id="one" value="{{q.opt_1|escape}}"></input><label for="one">{{q.opt_1|escape}}</label></p>
+                <p><input type="radio" name="q1" id="two" value="{{q.opt_2|escape}}"></input><label for="two">{{q.opt_2|escape}}</label></p>
+                <p><input type="radio" name="q1" id="three" value="{{q.opt_3|escape}}"></input><label for="three">{{q.opt_3|escape}}</label></p>
+                <p><input type="radio" name="q1" id="four" value="{{q.opt_4|escape}}"></input><label for="four">{{q.opt_4|escape}}</label></p>
+                <p><input type="radio" name="q1" id="pass" value="{{PASS|escape}}" checked></input><label for="pass">PASS</label></p>
+                <p><input id="submit" type="submit" value="Submit Answer"></input></p>   
+            </form>
+        </div>
+    </div>
+</div>

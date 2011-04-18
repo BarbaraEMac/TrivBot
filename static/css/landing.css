@@ -1,0 +1,74 @@
+@font-face {
+ font-family: monaco;
+ src: url("/font/MONACO.TTF") /* TTF file for CSS3 browsers */
+}
+
+body {
+    color: yellow;
+    background-color: black;
+    font-family: monaco, monospace;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#footer {
+    position: fixed;
+    bottom: 1%;
+    right: 1%;
+}
+
+a {
+    color: yellow;
+    text-decoration: none;
+}
+
+#side_logo {
+    position: fixed;
+    right: 0%;
+    bottom: 0%;
+    height: 400px;
+}
+
+#logo {
+    position: fixed;
+    left: 0%;
+    top: 0%;
+    height: 300px;
+}
+
+#content {
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+#login { 
+    float: left;
+    width: 30%;
+    right: 12%;
+}
+
+#login img {
+    border: none;
+    height: 75px;
+    margin-top: 10%;
+    margin-right: 5%;
+}
+
+#login img:hover {
+    border: none;
+    cursor: pointer;
+}
+
+#text {
+    float: left;
+    width: 70%;
+    margin-top: 20%;
+}
+#motto {
+    position: fixed;
+    top: 225px;
+    left: 265px;
+}

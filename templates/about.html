@@ -1,0 +1,31 @@
+<div id="about_page">
+    <div id="how_div">
+        <h2>How to Play </h2><img id="title_img" src="images/logo_no.png"></img><h2>: The Social Trivia Game</h2>
+        <br />
+        <br />
+        <br />
+        <ul>
+            <li>Join a Troupe on the 'Account' page. </li>
+                Troupes are 'trivia groups'. Members of a troupe are your competitors!<br/ ><br />
+            <li>Visit this site to answer the <u>daily</u> trivia question. </li><br />
+            <li>Before answering a question, you must contribute to the troupe's tally.</li>  
+                You only have to add 5&#162; per day!<br /><br />
+            <li> Answer correctly to earn 2 points.</li><br />
+            <li> Answer incorrectly to lose 1 point.</li><br />
+            <li> Question too difficult? You can 'Pass' to earn 1 point.</li><br />
+            <li>Each month, the highest scorer in each troupe wins a percentage of the tally!</li><br />
+            <li><em>To get started, click on <a href="/willet">Today's Question</a>!</em></li>
+        </ul>
+    </div>
+    
+    <div id="who_div">
+        <h2> Feedback</h2>
+            <p> This app was created by someone who LOVES trivia. Your feedback is much appreciated! </p>
+            <p>Want to add a trivia question to the site and gain 3 points? Submit one here! </p>
+
+            <form name="feedback_form" action="/submitFeedback" method="post">
+                <p><textarea id="feedback"></textarea></p>
+            </form>
+            <button onClick="submitFeedback(  );"> Submit! </button>
+    </div>
+</div>

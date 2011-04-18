@@ -1,0 +1,18 @@
+<div id="first_account_page">
+
+    <img id="welcome_img" src="/images/welcome.png"> </img>
+    
+    <p>
+        Beyond embarking on your quest to outwit your friends, <br />
+        please enter some information about yourself!
+    </p>
+
+    <form id="first_account_form" name="account_form" action="/updateAccount" method="post">
+        First Name: <input type="text" value="{{user.first_name|escape}}" id="first_name"></input><br /><br />
+        Last Name : <input type="text" value="{{user.last_name|escape}}" id="last_name"></input><br /><br />
+        Preferred Email: <input type="text" value="{{user.email|escape}}" id="email"></input><br /><br />
+    </form>
+        
+    <img id="save_img" src="/images/save.png" onClick="updateAccount( true );"> </img>
+
+</div>

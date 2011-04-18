@@ -1,0 +1,130 @@
+@font-face {
+ font-family: sanitarium;
+ src: url("/font/SanitariumBB.eot") /* EOT file for IE */
+}
+@font-face {
+ font-family: sanitarium;
+ src: url("/font/SanitariumBB.ttf") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+ font-family: monaco;
+ src: url("/font/MONACO.TTF") /* TTF file for CSS3 browsers */
+}
+
+@font-face {
+ font-family: monaco;
+ src: url("/font/MONACO.eot") /* EOT file for IE */
+}
+
+body {
+    font-family: monaco, monospace;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    color: yellow;
+}
+
+h1, h2, h3 {
+    font-family: sanitarium, monospace;
+}
+
+#corner_logo {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    height: 55px;
+}
+
+#question_img {
+    position: fixed;
+    top: 0%;
+    left: 10%; 
+    border: none;
+    height: 75px;
+}
+
+#account_img {
+    border: none;
+    position: fixed;
+    top: 1%;
+    right: 16%;
+    height: 30px;
+}
+
+#about_img {
+    border: none;
+    position: fixed;
+    top: 1%;
+    right: 8%;
+    height: 30px;
+}
+
+#logout {
+    position: fixed;
+    top: 2%;
+    right: 0.5%;
+    height: 20px;
+}
+
+#question_img:hover, #logout:hover, #account_img:hover, #about_img:hover {
+    border: none;
+    box-shadow: 3px 3px 4px yellow;
+}
+
+.left {
+    float: left;
+    width: 50%;
+}
+
+.right {
+    float: right;
+    width: 50%;
+}
+
+#footer {
+    width: 100%;
+}
+
+#footer a {
+    text-decoration: none;
+    color: yellow;
+}
+
+#powered_link {
+    position: fixed;
+    font-family: Courier;
+    right: 1%;
+    bottom: 1%;
+    font-size: 0.8em;
+}
+
+#challenge_link { 
+    position: fixed;
+    width: 80%;
+    left: 1%;
+    bottom: 1%;
+    font-size: 0.8em;
+}
+
+#challenge_link img {
+    border: none;
+    position: fixed;
+    bottom: 1%;
+    height: 4%;
+}
+
+#challenge_link form {
+}
+
+#challenge_link img:hover {
+    border: none;
+    cursor: pointer;
+}
+
+#invite {
+    width: 20%;
+    background-color: black;
+    color: yellow;
+    font-size: 1.0em;
+}

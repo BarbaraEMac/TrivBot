@@ -1,0 +1,41 @@
+application: triv-bot
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+- url: /favicon.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
+
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+
+- url: /css
+  static_dir: static/css
+
+- url: /js
+  static_dir: static/js
+
+- url: /images
+  static_dir: static/images
+  
+- url: /font
+  static_dir: static/font
+
+- url: /icons
+  static_dir: static/icons
+
+# Cron
+- url: /cron/.*
+  script: cron.py
+  login: admin
+
+- url: /test/.*
+  script: main.py
+  login: admin
+
+- url: .*
+  script: main.py
