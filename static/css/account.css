@@ -1,15 +1,8 @@
 #account_page {
     width: 100%;
     height: 100%;
-    margin-top: 5%;
+    margin-top: 1%;
     float: left;
-    color: #ffe900;
-}
-
-#title {
-    font-family: sanitarium, monospace;
-    font-size: 1.7em;
-    text-align: center;
 }
 
 #left_panel {
@@ -19,30 +12,54 @@
     margin-top: 2%;
 }
 
+#your_troupe p {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+#your_troupe #r, #l {
+    margin-top: 19px;
+}
+
+#your_troupe #l {
+    margin-left: 175px;
+}
+
 #ranking {
     float: left;
     width: 25%;
     height: 100%;
     margin-left: 5%;
-    margin-top: 5%;
+    margin-top: 10%;
 
-    background-color: #0e53a7;
+    background: url("/images/bg_blue.png") center top repeat;
+
     border: 5px solid #1478f1;
     border-radius: 20px;
+    /* background-color: #0e53a7; */
+}
+
+#ranking h2, #scorebox h2 {
+    font-size: 2.0em;
+}
+
+#ranking p {
+    margin-left: 20px;
 }
 
 #scorebox {
     float: left;
     text-align: center;
-    border: 5px solid #de0052;
-    border-radius: 20px;
     
-    background-color: #8b0034;
+    border-radius: 20px;
+    border: 5px solid #de0052;
+    background: url("/images/bg_pink.png") center top repeat;
     
     width: 15%;
     height: 90%;
     margin-left: 5%;
-    margin-top: 10%;
+    margin-top: 16%;
+    /* background-color: #8b0034; */
 }
 
 #score {
@@ -51,7 +68,7 @@
 }
 
 input[type="text"] {
-    background-color: black;
+    background: url("/images/bg_dark.png") center top repeat;
     font-size: 1.2em;
     color: #ffe900;
     width: 300px;
@@ -62,17 +79,15 @@ input[type="text"] {
 }
 
 #troupe_form {
+    width: 100%;
     float: left;
 }
 
-#troupe_form button {
-    float: left;
-
-}
-
-#switch_img {
-    height: 20px;
-    border: none;
+#switch {
+    float: right;
+    height: 30px;
+    margin-top: 4px;
+    margin-right: 45px;
 }
 
 #account_page img:hover {
@@ -80,14 +95,9 @@ input[type="text"] {
     border: none;
 }
 
-#ranking p {
-    margin-left: 20px;
-}
-
-#update_img {
+#update {
     margin-left: 40%;
     height: 30px;
-    border: none;
 }
 
 #first_account_page {
@@ -110,13 +120,8 @@ input[type="text"] {
     text-align: center;
 }
 
-#save_img {
-    height: 50px;
+#save {
+    font-size: 4.0em;
     margin-left: 43%;
-    border: none;
-}
-
-#save_img:hover {
-    cursor: pointer;
     border: none;
 }

@@ -1,5 +1,5 @@
 application: triv-bot
-version: 1
+version: 2
 runtime: python
 api_version: 1
 
@@ -8,10 +8,6 @@ handlers:
 - url: /favicon.ico
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
-
-- url: /robots.txt
-  static_files: static/robots.txt
-  upload: static/robots.txt
 
 - url: /css
   static_dir: static/css
@@ -31,6 +27,15 @@ handlers:
 # Cron
 - url: /cron/.*
   script: cron.py
+  login: admin
+
+# Queue
+- url: /queue/.*
+  script: queue.py
+  login: admin
+
+- url: /test
+  script: main.py
   login: admin
 
 - url: /test/.*

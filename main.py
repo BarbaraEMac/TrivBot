@@ -1,8 +1,9 @@
 #!/usr/bin/env python
-
+import hashlib 
 import logging
 import os
 import random
+import simplejson as json 
 
 from datetime import datetime
 from google.appengine.ext import webapp
@@ -10,10 +11,11 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 
-from consts import *
+from consts  import *
+from cookies import LilCookies
 from emailer import Emailer
 from helpers import *
-from models import User, Question, Troupe
+from models  import User, Question, Troupe, get_question
 
 ####################################################################################
 # Decorators
@@ -25,14 +27,14 @@ def login_required( fn ):
             fn( self, user )
         else:
             # Go log in
-            self.redirect( users.create_login_url( '/willet' ) )
+            self.redirect( '/' ) #users.create_login_url( '/question' ) )
             return
     
     return check
 
-def name_required( fn ):
+def data_required( fn ):
     def check( self, user ):
-        if user.first_name == '' or user.last_name == '':
+        if user.first_name == '' or user.last_name == '' or user.email == '':
             self.redirect( '/account' )
             return
         else:
@@ -41,7 +43,7 @@ def name_required( fn ):
     
 def once_per_day( fn ):
     def check( self, user ):
-        if user.last_played == triv_today():
+        if u.played_today:
             self.redirect( '/result' )
             return
         else:
@@ -55,24 +57,30 @@ class URIHandler( webapp.RequestHandler ):
 
     def __init__(self):
         # For simple caching purposes. Do not directly access this. Use self.get_user() instead.
-        self.user     = None
+        self.user = None
 
     def get_user(self):
         if self.user:
             return self.user
 
-        # Get the Google session (not from the db)
-        google_user = users.get_current_user()
+        #uuid = 'g66c8dmdNl8QIyzC05LisbfBH2Bp6mkzleTIi7SW6ltvQ2BySDS05gC3mcw6bW96BgRTO9oGRj38rF0AHSMzQPbAFSVu0WAzoGKZFrSfsaUDI1c3D'
+        
+        #cookieutil = LilCookies(self, COOKIE_SECRET)
+        #cookieutil.set_secure_cookie(name = COOKIE_NAME, value = uuid, expires_days = 365)
 
-        if google_user:
-            self.user = User.get_or_create( google_user )
+        # Look at cookies
+        cookieutil = LilCookies(self, COOKIE_SECRET)
+        uuid       = cookieutil.get_secure_cookie(name = COOKIE_NAME) 
+        
+        logging.error("UUID: %s" % uuid)
 
+        if uuid:
+            self.user = User.get_or_create_by_uid( uuid )
+        else:
+            logging.error("CANT FIND PERSON")
+        
         return self.user
     
-    def get_question( self ):
-        q = Question.all().filter('day = ', triv_today()).get()
-        return q
-
     def render_page(self, template_file_name, content_template_values):
         """This re-renders the full page with the specified template."""
 
@@ -91,7 +99,7 @@ class URIHandler( webapp.RequestHandler ):
 
         template_values = {
             'CONTENT': content,
-            'LOGOUT_URL' : users.create_logout_url( '/' ),
+            'LOGOUT_URL' : '/logout',
             'user' : user
         }
         merged_values = dict(template_values)
@@ -107,7 +115,7 @@ class ShowAccountHandler( URIHandler ):
     @login_required
     def get( self, user ):
         
-        if user.first_name == '' or user.last_name == '':
+        if user.first_name == '' or user.last_name == '' or user.email == '':
             html_page    = 'first_account.html'
             troupe_mates = []
         else:
@@ -116,17 +124,18 @@ class ShowAccountHandler( URIHandler ):
             while len(troupe_mates) <= 5:
                 troupe_mates.append( '%d. -' % (len(troupe_mates) + 1) )
 
-        logging.info("got %d" % len(troupe_mates))
+      #  logging.info("got %d" % len(troupe_mates))
         
         template_values = { 
             'CSS_FILE' : 'account',
             'JS_FILE' : 'account',
-            'daily_email' : user.daily_email,
+            'aaily_email' : user.daily_email,
             'troupe_mates' : troupe_mates[0:5], # Top 5 people
         }
 
         self.response.out.write( self.render_page( html_page, template_values ) )
-
+    
+    
 class ShowAboutHandler( URIHandler ):
     
     @login_required
@@ -141,14 +150,10 @@ class ShowAboutHandler( URIHandler ):
 class ShowQuestionHandler( URIHandler ):
     
     @login_required
-    @name_required
+    @data_required
     @once_per_day
     def get( self, user ):
-        id = self.request.get( 'id' )
-        q  = self.get_question()
-
-        if q.offer_id != id:
-            self.redirect( '/willet' )
+        q  = get_question()
 
         template_values = {
             'JS_FILE' : 'question',
@@ -159,39 +164,58 @@ class ShowQuestionHandler( URIHandler ):
         }
 
         self.response.out.write( self.render_page( 'question.html', template_values ) )
+    
+    def post( self ):
+        
+        message      = self.request.get( 'message' )
+        message_key  = self.request.get( 'message_key' ) 
+        message_hash = self.request.get( 'message_hash' ) 
+        
+        #foo = '{"message" : {"user_id" : "g66c8dmdNl8QIyzC05LisbfBH2Bp6mkzleTIi7SW6ltvQ2BySDS05gC3mcw6bW96BgRTO9oGRj38rF0AHSMzQPbAFSVu0WAzoGKZFrSfsaUDI1c3D", "description" : "adf", "title" : "asdf", "timestamp" : "1303356071.71", "price" : 86, "message_type" : "NEW", "offer_id" : "8f62704e12794e8d"}, "message_hash" : "39e643c11e558fdb6bf71165a6ab92721413edc1", "message_key" : "600c7d7e2f1f4aa7a91b7f995823ccc4"}'
+
+        logging.error('DATA %s' % self.request)
+
+        #data         = json.loads( self.request.get('data') )
+        #message      = data[ 'message' ]
+        #message_key  = data[ 'message_key' ]
+        #message_hash = data[ 'message_hash' ]
+
+        logging.error("Message: %s Key %s Hash %s" % (message, message_key, message_hash))
+
+        computed_message_hash = hashlib.sha1(message + CLIENT_SECRET_KEY + message_key).hexdigest() 
+        logging.error("MY %s their %s" % (computed_message_hash, message_hash))
+        
+        #computed_message_hash = "39e643c11e558fdb6bf71165a6ab92721413edc1"
+
+        if not message_hash == computed_message_hash: 
+            self.redirect( '/' )
+        else: 
+            uuid = json.loads( message )['user_id']
+
+            user = User.get_or_create_by_uid( uuid )
+            
+            cookieutil = LilCookies(self, COOKIE_SECRET)
+            cookieutil.set_secure_cookie(name = COOKIE_NAME, value = uuid, expires_days = 365)
+            logging.error("SETTING A COOKIE")
+            
+            self.redirect( '/question' )
 
 class ShowLandingHandler( webapp.RequestHandler ):
     
     def get(self):
         path = os.path.join(os.path.dirname(__file__), 'templates/landing.html')
         template_values = {
-            'LOGIN_URL' : users.create_login_url( '/willet' ),
         }
 
         self.response.out.write( template.render( path, template_values ) )
 
-class ShowWilletHandler( URIHandler ):
-    
-    @login_required
-    @name_required
-    @once_per_day
-    def get( self, user ):
-        q = self.get_question( )
-
-        template_values = {
-            'CSS_FILE' : 'willet',
-            'offer_id' : q.offer_id
-        }
-
-        self.response.out.write( self.render_page( 'willet.html', template_values ) )
-
 class ShowResultHandler( URIHandler ):
 
     @login_required
-    @name_required
+    @data_required
     def get( self, user ):
-        if user.last_played != triv_today():
-            self.redirect( '/willet' )
+        if not u.played_today:
+            self.redirect( '/question' )
             return
 
         score = self.request.get( 'score' )
@@ -200,15 +224,15 @@ class ShowResultHandler( URIHandler ):
 
         already_played = False
         if not (score == '1' or score == '2' or score == '-1'):
-            if user.last_played == triv_today():
+            if u.played_today:
                 already_played = True
     
         template_values = {
             'CSS_FILE' : 'result',
             'q_score' : int(score),
             'score' : user.score,
-            'question' : self.get_question().question,
-            'answer' : self.get_question().answer,
+            'question' : get_question().question,
+            'answer' : get_question().answer,
             'already_played' : already_played
         }
 
@@ -217,6 +241,7 @@ class ShowResultHandler( URIHandler ):
 #######
 ## Do's
 #######
+
 class DoInviteHandler( URIHandler ):
 
     @login_required
@@ -292,42 +317,54 @@ class DoSubmitFeedbackHandler( URIHandler ):
 class DoAnswerQuestionHandler( URIHandler ):
 
     @login_required
-    @name_required
+    @data_required
     @once_per_day
     def post( self, user ):
         # Grab the user's answer
         ans = self.request.get( 'q1' )
 
         # Grab today's question
-        question = self.get_question( )
+        question = get_question( )
     
         # Check if the user is correct:
         score = user.update_score( question, ans )
 
         # Update time
-        user.last_played = triv_today()
+        user.last_played = triv_today( True )
         user.put()
 
         # Go to Results screen
         self.redirect( '/result?score=%s' % score )
 
-class TestHandler ( URIHandler ):
+class DoLogoutHandler( URIHandler ):
 
     @login_required
-    @name_required
-    def get( self, user ):
+    def post( self, user ):
+        logging.error("LOGOUT")
+        cookieutil = LilCookies( self, COOKIE_SECRET )
+        cookieutil.clear_cookie( name = COOKIE_NAME )
+        logging.error("DELETING COOKIE")
+
+class TestHandler ( URIHandler ):
+
+    def get( self ):
         qwe = Question.all()
         for q in qwe:
-            logging.error("Deleting 1 %s" % q.question)
-            q.delete()
-
-        path = os.path.join(os.path.split(__file__)[0], 'q.csv')
+            if hasattr(q, 'used'):
+                logging.error("Deleting 1 %s" % q.question)
+                delattr(q, 'used')
+                delattr(q, 'offer_id')
+                q.put()
+            #q.state = 'used'
+            #q.delete()
+        
+        path = os.path.join(os.path.split(__file__)[0], 'next_q.csv')
         f = open( path, 'r' )
 
         items = f.read().split('\n')
         logging.error("NUM QUERIOSN %d" % len(items) )
 
-        j = 0#qwe.count()
+        j = qwe.count()
         for i in items:
             if len(i) == 0:
                 break
@@ -354,30 +391,18 @@ class TestHandler ( URIHandler ):
             opt_3=tmp[c], 
             opt_4=tmp[d], 
             answer=tmp[6], 
-            offer_id=tmp[7],
             difficulty=tmp[0],
             category=tmp[1])
             
             q.put()
             logging.error("PUTTING 1")
             j += 1
-
         self.response.out.write( "done" )
-
-class PurchaseHandler( URIHandler ):
-
-    @login_required
-    @name_required
-    def get( self, user ):
-        q = self.get_question()
-
-        self.redirect( '/question?id=%s' % q.offer_id )
-        return
 
 class TroupeHandler( URIHandler ):
 
     @login_required
-    @name_required
+    @data_required
     def get( self, user ):
         user = self.get_user()
 
@@ -385,6 +410,14 @@ class TroupeHandler( URIHandler ):
             user.troupe = Troupe.get_or_create( 'Everyone' )
             user.put()
 
+class UpdateUsers( URIHandler ):
+    def get( self ):
+        users = User.all()
+
+        for u in users:
+            u.put()
+        
+        self.response.out.write( "done" )
 
 def main():
     application = webapp.WSGIApplication([
@@ -392,15 +425,15 @@ def main():
                                           ('/account', ShowAccountHandler),
                                           ('/answerQuestion', DoAnswerQuestionHandler),
                                           ('/invite', DoInviteHandler),
+                                          ('/logout', DoLogoutHandler),
                                           ('/question', ShowQuestionHandler),
                                           ('/result', ShowResultHandler),
-                                          ('/purchase', PurchaseHandler),
                                           ('/submitFeedback', DoSubmitFeedbackHandler),
                                           ('/test', TestHandler),
+                                          ('/test/users', UpdateUsers),
                                           ('/test/troupe', TroupeHandler),
                                           ('/updateAccount', DoUpdateAccountHandler),
                                           ('/updateTroupe', DoUpdateTroupeHandler),
-                                          ('/willet', ShowWilletHandler),
                                           ('/.*', ShowLandingHandler),
                                           ],
                                          debug=True)

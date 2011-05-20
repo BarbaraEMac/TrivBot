@@ -2,6 +2,7 @@ import re
 import logging
 
 from datetime import datetime
+from datetime import date
 from datetime import timedelta
 
 def is_good_email(email):
@@ -16,9 +17,12 @@ def is_good_name( name ):
             return True
     return False
 
-def triv_today( ):
-    today = datetime.date( datetime.today() )
-
+def triv_today( include_time = False ):
+    
+    today = datetime.today()
+    if not include_time:
+        today = datetime.date( today )
+    
     # Is today Saturday?
     if today.weekday() == 5:
         today -= timedelta( days = 1 ) # Make it Friday
@@ -28,3 +32,9 @@ def triv_today( ):
         today -= timedelta( days = 2 ) # Make it Friday
     
     return today
+
+def to_date( date_time ):
+    if date_time:
+        return datetime.date( date_time )
+    else:
+        return None

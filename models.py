@@ -9,46 +9,57 @@ from google.appengine.api import users
 from consts import *
 
 class User( db.Model ):
-    google_user  = db.UserProperty()
+    uuid         = db.StringProperty( default = '' )
     first_name   = db.StringProperty( default = '' )
     last_name    = db.StringProperty( default = '' )
     email        = db.StringProperty( default = '' )
     daily_email  = db.BooleanProperty( default = True )
-    last_played  = db.DateProperty()
+    joined       = db.DateTimeProperty( auto_now_add = True )
+    last_played  = db.DateTimeProperty()
+    played_today = db.BooleanProperty( default = False )
     troupe       = db.ReferenceProperty()
     score        = db.IntegerProperty( default = 0 )
+    num_correct  = db.IntegerProperty( default = 0 )
+    num_wrong    = db.IntegerProperty( default = 0 )
+    num_pass     = db.IntegerProperty( default = 0 )
 
     @staticmethod
-    def get_by_google_user(g_user):
-        return User.all().filter('google_user = ', g_user).get()
+    def get_by_uuid( uuid ):
+        return User.all().filter('uuid = ', uuid ).get()
 
     @staticmethod
-    def get_or_create( g_user ):
-        user = User.get_by_google_user( g_user )
-            
+    def get_or_create_by_uid( uuid ):
+        user = User.get_by_uuid( uuid )
+        
         # If not User, create and store it.
         if user == None:
             Troupe.get_or_create( 'Everyone' )
             
-            user = User ()
-            user.google_user = g_user
-            user.email       = g_user.email()
-            user.troupe      = Troupe.join_troupe( 'Everyone', user )
+            user        = User ()
+            user.uuid   = uuid
+            user.troupe = Troupe.join_troupe( 'Everyone', user )
             user.put()
-
         return user
 
     def update_score( self, question, ans ):
         s = 0
         if ans == PASS:
             s = 1
+            self.num_pass += 1
+            question.num_pass += 1
         elif question.is_correct( ans ):
             s += 2
+            self.num_correct += 1
+            question.num_correct += 1
         else:
             s = -1
+            self.num_wrong += 1
+            question.num_wrong += 1
         
         self.score += s
         self.put()
+
+        question.put()
 
         return s
 
@@ -62,26 +73,61 @@ class User( db.Model ):
     def get_troupe_mates( self ):
         return self.troupe.get_memberlist( )
 
+    def get_days_played( self ):
+        return self.num_correct + self.num_wrong + self.num_pass
+
+    def reset( self ):
+        self.score       = 0
+        self.num_correct = 0
+        self.num_wrong   = 0
+        self.num_pass    = 0
+        self.put()
+
+    def get_place( self ):
+        mates = self.get_troupe_mates()
+
+        for m in mates:
+            if self.first_name in m and self.last_name[0] in m:
+                return m.split('.')[0]
+
 # end User
 
 class Question( db.Model ):
-    question   = db.StringProperty()
-    opt_1      = db.StringProperty()
-    opt_2      = db.StringProperty()
-    opt_3      = db.StringProperty()
-    opt_4      = db.StringProperty()
-    answer     = db.StringProperty()
-    category   = db.StringProperty()
-    difficulty = db.StringProperty()
-    offer_id   = db.StringProperty()
-    used       = db.BooleanProperty( default=False )
-    day        = db.DateProperty( default=None )
+    question    = db.StringProperty()
+    opt_1       = db.StringProperty()
+    opt_2       = db.StringProperty()
+    opt_3       = db.StringProperty()
+    opt_4       = db.StringProperty()
+    answer      = db.StringProperty()
+    category    = db.StringProperty()
+    difficulty  = db.StringProperty()
+    state       = db.StringProperty( default = 'unused' )
+    day         = db.DateProperty( default=None )
+    num_correct = db.IntegerProperty( default = 0 )
+    num_wrong   = db.IntegerProperty( default = 0 )
+    num_pass    = db.IntegerProperty( default = 0 )
 
     def is_correct( self, ans ):
         if self.answer == ans:
             return True
 
         return False
+
+    def incr_correct( self ):
+        self.num_correct += 1
+        self.put()
+
+    def incr_wrong( self ):
+        self.num_wrong += 1
+        self.put()
+
+    def incr_pass( self ):
+        self.num_pass += 1
+        self.put()
+
+def get_question( ):
+    q = Question.all().filter('state = ', 'in_use').get()
+    return q
 
 # end Question
 
@@ -133,7 +179,7 @@ class Troupe( db.Model ):
         i = 0
         for u in users:
             if u.troupe.name == self.name:
-                if u.first_name and u.last_name:
+                if u.first_name and u.last_name and u.email:
                     tmp.append( (u.score, u.first_name, u.last_name[0]) )
                     logging.info( "%s" % str(tmp[i]) )
                     i += 1
@@ -149,4 +195,29 @@ class Troupe( db.Model ):
             i += 1
 
         return ret
+
+    def get_uuid_memberlist( self ):
+        users = User.all()
+        tmp = []
+        logging.info("COUNT %d" % users.count())
+
+        # Build list of everyone in this troupe
+        i = 0
+        for u in users:
+            if u.troupe.name == self.name:
+                if u.first_name and u.last_name and u.email:
+                    tmp.append( (u.score, u.uuid) )
+                    logging.info( "%s" % str(tmp[i]) )
+                    i += 1
+        
+        # Sort list
+        tmp = sorted( tmp, key=lambda x: -x[0] ) # Sort in desc order by score
+
+        logging.error("ORDER")
+        for t in tmp:
+            logging.error( "%s %s" % (t[0], t[1]) )
+
+        return tmp
+
+        
 # end Troupe

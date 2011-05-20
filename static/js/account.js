@@ -37,7 +37,7 @@ function updateAccount( first_account ) {
 
 function updateTroupe( ) {
     var troupe_name = document.getElementById( "troupe_name" );
-
+    
     $.ajax({
         url: "/updateTroupe", 
         type: "POST",

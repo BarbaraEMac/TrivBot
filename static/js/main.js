@@ -15,6 +15,19 @@ function colourTitle () {
     }
 }
 
+function foo( ) {
+       $.ajax({
+        url: "/logout", 
+        type: "POST",
+        data: ({ }),
+        success: function(response) {
+            self.location.reload(true);
+        },
+        error: function( response ) {
+        }
+    });
+}
+
 function invite( ) {
     var invite = document.getElementById( "invite" );
 
@@ -24,11 +37,11 @@ function invite( ) {
         data: ({ email: invite.value }),
         success: function(response) {
             document.getElementById( 'invite' ).value = "Email sent!";
-            setTimeout("document.getElementById('invite').value=\" \"", 1500);
+            setTimeout("document.getElementById('invite').value=\"\"", 1500);
         },
         error: function( response ) {
             document.getElementById( 'invite' ).value = "Invalid email address";
-            setTimeout("document.getElementById('invite').value=\" \"", 1500);
+            setTimeout("document.getElementById('invite').value=\"\"", 1500);
         }
     });
 }

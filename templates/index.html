@@ -2,27 +2,45 @@
 <html>
     <head>
         <title>Trivbot</title>
+
+        <meta name="description" content="TrivBot - Daily Social Trivia" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="keywords" content="trivia, daily trivia, daily trivia questions, email trivia, trivbot,
+        triviabot, triv bot, trivia bot, trivia robot, weekly trivia, monthly trivia, social trivia" />
+        
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-23344375-2']);
+          _gaq.push(['_trackPageview']);
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
         <link rel="stylesheet" href="css/main.css" />
         <link rel="stylesheet" href="css/{{CSS_FILE|escape}}.css" />
     
         <script src="js/main.js"></script>
         <script src="js/{{JS_FILE|escape}}.js"></script>
         <script src="js/jquery.min.js"></script>
-        <script src="http://www.getwillet.com/dynamic/js/willet.js" type="text/javascript"></script>
     </head>
 
     <body onload="colourTitle();">
-        <a href="/"><img id="corner_logo" src="/images/logo_45_bot.png"></img></a>
-        <a id="question_link" href="/willet"> <img id="question_img" src="/images/today_question.png"></img></a>
-        <a id="account_link" href="/account" ><img id="account_img" src="/images/account.png"></img></a>
-        <a id="about_link" href="/about"><img id="about_img" src="/images/about.png"></img></a>
-        <a href="{{LOGOUT_URL|escape}}"><img id="logout" src="/images/logout.png"></img></a>
+        <div id="header">
+            <a href="/"><img id="corner_logo" src="/images/logo_no.png"></img></a>
+            <a id="question_link" href="/question"> <img id="question_img" src="/images/today_question.png"></img></a>
+            <a id="account_link" href="/account" ><img id="account_img" src="/images/account.png"></img></a>
+            <a id="about_link" href="/about"><img id="about_img" src="/images/about.png"></img></a>
+            <a onClick="foo();"><img id="logout" src="/images/logout.png"></img></a>
+        </div>
 
         <div id="content">
             {{CONTENT}}
         </div>
 
-        <div id="footer" >
+        <div id="footer">
             <div id="challenge_link">
                 <form name="invite_form" action="/invite" method="post">
                     <object>Challenge A Friend:</object> 

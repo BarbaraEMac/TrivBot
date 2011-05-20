@@ -8,7 +8,10 @@ function countdown ( secs ) {
         foo = "countdown(" + (secs-1) + ")";
         setTimeout(foo, 1000);
     } else {
-        document.forms["question_form"].submit.click();
+        button = document.getElementById('submit');
+        button.style.visibility = 'hidden';
+
+        setTimeout('submit()', 1000);
     }
 
     msg = secs;
@@ -25,4 +28,8 @@ function countdown ( secs ) {
     if ( document.getElementById( "cntdwn" ) ) {
         document.getElementById("cntdwn").innerHTML = msg;
     }
+}
+
+function submit() {
+    document.forms["question_form"].submit.click();
 }

@@ -1,7 +1,7 @@
 <div id="account_page">
     <div id="left_panel">
         <div>
-            <div id="title"> Deets </div>
+            <h2> Deets </h2>
             <form name="account_form" action="/updateAccount" method="post">
                 First Name: <input type="text" value="{{user.first_name|escape}}" id="first_name"></input><br />
                 Last Name : <input type="text" value="{{user.last_name|escape}}" id="last_name"></input><br />
@@ -14,37 +14,37 @@
                 {% endif %}
 
             </form>
-            <img id="update_img" src="/images/update.png" onClick="updateAccount( false );"> </img>
+            <button id="update" onClick="updateAccount( false );"> Update! </button>
         </div>
 
         <br />
         <br />
         
-        <div>
-            <div id="title">Your Troupe</div>
+        <div id="your_troupe">
+            <h2>Your Troupe </h2>
+            <p> Members of a troupe are your direct competitors!</p>
+            <p>Enter your company's name and click 'Switch'!</p>
+            <p id="r">Challenge your co-workers -</p>
+            <p id="l">Discuss trivia around the water cooler!</p>
             <br />
-            Troupes are 'trivia groups'. <br />
-            Members of a troupe are your direct competitors! <br />
-            To switch to a new troupe, enter a name here. <br /><br />
             <div id="troupe_form">
                 <form name="troupe_form" action="/updateTroupe" method="post">
                     Your Troupe: <input type="text" value="{{user.troupe.name|escape}}" id="troupe_name"></input>
-                    <img id="switch_img" src="/images/switch.png" onClick="updateTroupe(  );"> </img>
+                    <button id="switch" onClick="updateTroupe( );"> Switch! </button>
                 </form>
             </div>
         </div>
     </div>
 
     <div id="ranking">
-        <div id="title">Troupe "{{user.troupe.name|escape}}"<br /> Top Scorers</div>
-        <br />
+        <h2>Troupe "{{user.troupe.name|escape}}"<br /> Top Scorers</h2>
         {% for m in troupe_mates %}
              <p>{{m|escape}} </p>
         {% endfor %}
     </div>
 
     <div id="scorebox">
-        <div id="title">Your Score:</div>
+        <h2>Your Score</h2>
         <div id="score">
              {{user.score|escape}} 
         </div>

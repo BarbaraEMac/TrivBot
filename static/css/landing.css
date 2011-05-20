@@ -5,15 +5,23 @@
 
 body {
     color: yellow;
-    background-color: black;
+    background: url("/images/bg_dark.png") center top repeat;
     font-family: monaco, monospace;
     text-align: center;
     height: 100%;
     width: 100%;
     overflow: hidden;
+    text-shadow: 2px 2px 2px black;
 }
 
-#footer {
+#footer_l {
+    font-size: 0.7em;
+    position: fixed;
+    bottom: 1%;
+    left: 1%;
+}
+
+#footer_r {
     position: fixed;
     bottom: 1%;
     right: 1%;
@@ -46,14 +54,14 @@ a {
 
 #login { 
     float: left;
-    width: 30%;
+    width: 40%;
     right: 12%;
 }
 
 #login img {
     border: none;
-    height: 75px;
-    margin-top: 10%;
+    height: 150px;
+    margin-top: 35%;
     margin-right: 5%;
 }
 
@@ -64,7 +72,7 @@ a {
 
 #text {
     float: left;
-    width: 70%;
+    width: 60%;
     margin-top: 20%;
 }
 #motto {

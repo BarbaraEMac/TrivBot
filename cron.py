@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 import logging
-import time
 
+from google.appengine.api import taskqueue
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from emailer  import Emailer
 from helpers import *
-from models import User, Question, Troupe
+from models import User, Question, Troupe, get_question
 from main import URIHandler
 
 class SendEmailHandler( URIHandler ):
@@ -18,32 +18,33 @@ class SendEmailHandler( URIHandler ):
         users = User.all()
 
         for u in users:
-            if u.daily_email:
-                time.sleep(10)
-                Emailer.dailyEmail( u )
+            if u.daily_email and not u.played_today:
+                taskqueue.add( queue_name = 'dailyEmailQueue', 
+                               url        = '/queue/dailyEmail',
+                               params     = {'uuid' : u.uuid} )
 
 class UpdateQuestionHandler( URIHandler ):
     
     def get( self ):
         # Fetch question
-        q = self.get_question()
+        q = get_question()
         
         # And mark it as used!
         if q:
-            q.used = True
-            q.day  = None
+            q.state = 'used'
             q.put()
 
         # Get a new question
-        new_q = Question.all().filter("used = ", False).get()
+        new_q = Question.all().filter("state = ", 'unused').get()
         
         # Set the day to today!
-        new_q.day = triv_today()
+        new_q.day   = triv_today( )
+        new_q.state = 'in_use'
 
         # Save the new question
         new_q.put()
 
-        if Question.all().filter('used = ', False).count() <= 3:
+        if Question.all().filter('state = ', 'unused').count() <= 3:
             Emailer.outOfQuestions()
 
 class ClearTroupeHandler( URIHandler ):
@@ -55,11 +56,49 @@ class ClearTroupeHandler( URIHandler ):
             if t.num_members <= 0:
                 t.delete()
 
+class MonthlyResetHandler( URIHandler ):
+    
+    def get( self ):
+        troupes = Troupe.all()
+        winners = []
+        players = []
+
+        for t in troupes:
+            members = t.get_uuid_memberlist()
+
+            for m in members:
+                logging.error("XX %s %s" % (m[0], m[1]) )
+
+            winners.append( User.get_by_uuid( members[0][1] ) )
+            players.append( len(members) )
+            
+            if len(members) > 1:
+                winners.append( User.get_by_uuid( members[1][1] ) )
+                players.append( len(members) )
+            
+            if len(members) > 2:
+                winners.append( User.get_by_uuid( members[2][1] ) )
+                players.append( len(members) )
+            
+        Emailer.adminMonthlySummary( winners, players )
+
+        users = User.all()
+
+        for u in users:
+            # Make sure they played this month.
+            if u.get_days_played() > 0:
+                time.sleep(10)
+                Emailer.monthlySummary( u )
+            
+            u.reset()
+
+
 
 ##### Call Handler #####
 ########################
 application = webapp.WSGIApplication([
                                       ('/cron/clearTroupes', ClearTroupeHandler),
+                                      ('/cron/monthlyReset', MonthlyResetHandler),
                                       ('/cron/sendEmails', SendEmailHandler),
                                       ('/cron/updateQuestion', UpdateQuestionHandler),
 										], debug=True)
