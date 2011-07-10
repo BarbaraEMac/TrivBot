@@ -6,12 +6,22 @@ function colourTitle () {
         link = document.getElementById( "account_img" );
     } else if ( url.indexOf( 'about' ) != -1 ) {
         link = document.getElementById( "about_img" );
-    } else if ( (url.indexOf( 'question' ) != -1) || (url.indexOf( 'willet' ) != -1) || (url.indexOf( 'result' ) != -1) ) {
+    } else if ( (url.indexOf( 'question' ) != -1) || (url.indexOf( 'result' ) != -1) ) {
         link = document.getElementById( "question_img" );
     }
+
+    /*
+    if ( url.indexOf( 'account' ) != -1 ) {
+        link = document.getElementById( "account_link" );
+    } else if ( url.indexOf( 'about' ) != -1 ) {
+        link = document.getElementById( "about_link" );
+    } else if ( (url.indexOf( 'question' ) != -1) || (url.indexOf( 'result' ) != -1) ) {
+        link = document.getElementById( "question_link" );
+    }
+    */
     
     if ( link ) {
-        link.style.boxShadow = "3px 3px 4px yellow";
+        link.style.boxShadow = "3px 3px 4px #yellow";
     }
 }
 
@@ -46,24 +56,6 @@ function invite( ) {
     });
 }
 
-function submitFeedback( ) {
-    var feedback = document.getElementById( "feedback" );
-
-    $.ajax({
-        url: "/submitFeedback", 
-        type: "POST",
-        data: ({ 'feedback': feedback.value }),
-        success: function(response) {
-            document.getElementById( 'feedback' ).innerHTML = "Thanks!";
-            document.getElementById( 'feedback' ).value     = "Thanks!";
-            setTimeout( "document.getElementById('feedback').value=\"\"", 1500 );
-        },
-        failure: function(response) {
-        }
-    });
-}
-
-
 function maybeSubmit (field, e) {
     var keycode;
     if (window.event) keycode = window.event.keyCode;
@@ -78,3 +70,9 @@ function maybeSubmit (field, e) {
     else
        return true;
 }
+
+function clear_me( elem ) {
+    if ( elem ) {
+        elem.value = "";
+    }
+};

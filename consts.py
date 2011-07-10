@@ -4,3 +4,8 @@ COOKIE_NAME   = 'triv-bot_cookie'
 
 # Willet Stuff
 CLIENT_SECRET_KEY = '3ccd545fc1c54cd08eb2f47ef420e1db' #'36cc449f982d4ca8b69886fa2fd029b6'
+
+OFFER_ID         = '04f6420da92d47ed'
+
+API_URL          = 'http://ross-willet.appspot.com/api/v1'
+WILLET_CHECK_URL = '/purchase_check'

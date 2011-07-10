@@ -28,10 +28,13 @@ class Emailer():
         Emailer.send_email( from_addr, to_addr, subject, body )
 
     @staticmethod
-    def feedback( feedback, user ):
+    def feedback ( question, correct, incorrect_1, incorrect_2, incorrect_3, user ):
         to_addr = from_addr
-        subject = '[TrivBot] Feedback'
-        body    = """ <p>From: %s %s (%s)</p>Feedback: %s""" %(user.first_name, user.last_name, user.email, feedback)
+        subject = '[TrivBot] Question Submittal'
+        body    = """ <p>From: %s %s (%s)</p><p>Q: %s</p><p>C: %s</p><p>In1: %s</p><p>In2: %s</p><p>In3: %s</p>""" %(user.first_name, user.last_name, user.email, question, correct, incorrect_1,
+        incorrect_2, incorrect_3)
+
+        logging.info('body: %s' % body)
         
         Emailer.send_email( from_addr, to_addr, subject, body )
 
@@ -44,10 +47,8 @@ class Emailer():
         body     = """ <html> <head><style type="text/css"> body {background-image: url("http://www.trivbot.com/images/question_grey3.png");
         background-repeat: no-repeat; background-attachment: fixed; background-position: bottom right; font-family: monaco, monospace; font-size: 1.1em;
         background-color: black; color: yellow; border: 5px solid #0e53a7; border-radius: 20px;}</style></head><body><center><div><div><h2>Morning %s
-        %s!</h2></div> </div> <div> <p>Here today's (%s) category:</p> <h1>%s</h1> <p>and difficulty: <h1>%s / 3.</h1></p> <p> Visit <a
-        href="http://www.trivbot.com"><img height="25px" src="http://www.trivbot.com/images/logo_no.png" alt="TrivBot"></img></a> today
-        to increase your score!</p><p>Remember: if you PASS, you still get points!</p><p> -- TrivBot Team</p> </div><div><a href="http://www.trivbot.com"><img alt="TrivBot" height="100px" src="http://www.trivbot.com/images/logo_bot5.png"></a></img></div> 
-        </center></body> </html> 
+        %s!</h2></div> </div> <div> <p>Here is today's (%s) category:</p> <h1>%s</h1> <p>and difficulty: <h1>%s / 3.</h1></p> <p> Visit <a
+        href="http://www.trivbot.com">www.trivbot.com</a> today to increase your score!</p><p>Remember: if you PASS, you still get points!</p><p> -- TrivBot Team</p> </div><div><a href="http://www.trivbot.com"><img alt="TrivBot" height="100px" src="http://www.trivbot.com/images/logo_bot5.png"></a></img><p>To stop receiving these emails, uncheck the 'Daily Email' box on the Account page.</p></div> </center></body> </html> 
         """ % ( user.first_name, user.last_name, datetime.date( datetime.today() ).strftime( '%A %B %d, %Y' ), question.category, question.difficulty )
         
         #logging.error(body)
@@ -72,7 +73,8 @@ class Emailer():
         background-attachment: fixed; background-position: bottom right; font-family: monaco, monospace; font-size: 1.1em; background-color: black; color: yellow; border: 5px solid #0e53a7;
         border-radius: 20px;} </style> </head> <body> <center> <div> <h2> Hi %s %s!</h2> </div> <div> <p>Well, it's the end of <em>%s</em>, so it's time to wrap up another month of trivia! Here are
         your stats:</p> <p>Number of Days Played: %d</p> <p>Number of Correct Answers: %d</p> <p>Number of Incorrect Answers: %d</p> <p>Number of Passes: %d</p> <h2>Overall, you placed #%s within
-        Troupe "%s"!</h2> <p>Congratulations! Hope to see you again next month!</p> <p> -- TrivBot Team</p> </div> <div> <a href="http://www.trivbot.com"> <img alt="TrivBot" height="100px"
+        Troupe "%s"!</h2> <p>Congratulations! Hope to see you again next month!</p> <p>NOTE: Unfortunately due to a small bug, you will have to resubmit your name information when you login
+        next. I'm actively working on determining the cause of this bug. Sorry for the inconvenient additional keystrokes!</p> <p> -- TrivBot Team</p> </div> <div> <a href="http://www.trivbot.com"> <img alt="TrivBot" height="100px"
         src="http://www.trivbot.com/images/logo_bot5.png"> </a> </img> </div> </center> </body> </html> """ % (user.first_name, user.last_name, yesterday.strftime( '%B %Y' ), user.get_days_played(), user.num_correct, user.num_wrong, user.num_pass, user.get_place(), user.troupe.name)
         
         logging.error(body)

@@ -1,53 +1,73 @@
-<div id="account_page">
-    <div id="left_panel">
-        <div>
-            <h2> Deets </h2>
-            <form name="account_form" action="/updateAccount" method="post">
-                First Name: <input type="text" value="{{user.first_name|escape}}" id="first_name"></input><br />
-                Last Name : <input type="text" value="{{user.last_name|escape}}" id="last_name"></input><br />
-                Preferred Email: <input type="text" value="{{user.email|escape}}" id="email"></input><br />
-                
-                {% if daily_email %}
-                    Daily Email? <input type="checkbox" checked id="daily_email"></input>
-                {% else %}
-                    Daily Email? <input type="checkbox" id="daily_email"></input>
-                {% endif %}
-
-            </form>
-            <button id="update" onClick="updateAccount( false );"> Update! </button>
-        </div>
-
-        <br />
-        <br />
+<div id="account_page" class="prepend-top last">
+    <div class="container">
         
-        <div id="your_troupe">
-            <h2>Your Troupe </h2>
-            <p> Members of a troupe are your direct competitors!</p>
-            <p>Enter your company's name and click 'Switch'!</p>
-            <p id="r">Challenge your co-workers -</p>
-            <p id="l">Discuss trivia around the water cooler!</p>
-            <br />
-            <div id="troupe_form">
-                <form name="troupe_form" action="/updateTroupe" method="post">
-                    Your Troupe: <input type="text" value="{{user.troupe.name|escape}}" id="troupe_name"></input>
-                    <button id="switch" onClick="updateTroupe( );"> Switch! </button>
+        <div id="left_panel" class="span-12">
+            
+            <div class="span-12 last">
+                <h2> Deets </h2>
+                <form name="account_form" action="/updateAccount" method="post">
+                    <table>
+                        <tr>
+                            <td> First Name: </td>
+                            <td> <input type="text" value="{{user.first_name|escape}}" id="first_name"></input> </td>
+                        </tr><tr>
+                            <td> Last Name : </td>
+                            <td> <input type="text" value="{{user.last_name|escape}}" id="last_name"></input> </td>
+                        </tr><tr>
+                            <td> Preferred Email: </td>
+                            <td> <input type="text" value="{{user.email|escape}}" id="email"></input> </td>
+                        </tr><tr>
+                            <td> Daily Email? </td>
+                            {% if daily_email %}
+                                <td> <input type="checkbox" checked id="daily_email"></input> </td>
+                            {% else %}
+                                <td> <input type="checkbox" id="daily_email"></input> </td>
+                            {% endif %}
+                        </tr>
+                    </table>
                 </form>
+                <button id="update" class="prepend-5 append-5" onClick="updateAccount( false );"> Update! </button>
+            </div>
+            
+            <center> <hr> </center>
+
+            <div class="span-12 last">
+                <h2>Your Troupe </h2>
+                Members of a troupe are your direct competitors! <br />
+                Enter your company's name and click 'Switch'! <br />
+                Challenge your co-workers -- <br />
+                <span id="l">Discuss trivia around the water cooler!</span>
+                <div style="margin-bottom: 10px; margin-top: 10px;">
+                    <form name="troupe_form" action="/updateTroupe" method="post">
+                        <table>
+                            <tr>
+                                <td> Your Troupe: </td>
+                                <td width="200px"> <input type="text" value="{{user.troupe.name|escape}}" id="troupe_name"></input> </td>
+                                <td> <button id="switch" onClick="updateTroupe( );"> Switch! </button> </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div id="twitter">
+                    <a href="http://twitter.com/share?url=http%3A%2F%2Fwww.trivbot.com&amp;text=Yo%21&nbsp;I%27m&nbsp;issuing&nbsp;a&nbsp;trivia&nbsp;challenge%21&nbsp;Join&nbsp;my&nbsp;Troupe%2C&nbsp;{{user.troupe.name|escape}}%2C&nbsp;on&nbsp;Trivbot%3A&amp;counturl=http%3A%2F%2Fwww.trivbot.com" class="twitter-share-button">Tweet</a> 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="ranking">
-        <h2>Troupe "{{user.troupe.name|escape}}"<br /> Top Scorers</h2>
-        {% for m in troupe_mates %}
-             <p>{{m|escape}} </p>
-        {% endfor %}
-    </div>
-
-    <div id="scorebox">
-        <h2>Your Score</h2>
-        <div id="score">
-             {{user.score|escape}} 
+        <div id="ranking" class="span-6">
+            <h2>Troupe "{{user.troupe.name|escape}}"<br /> Top Scorers</h2>
+            {% for m in troupe_mates %}
+                 <p>{{m|escape}} </p>
+            {% endfor %}
         </div>
-    </div>
 
+        <div id="scorebox" class="span-4 last">
+            <h2>Your Score</h2>
+            <div id="score">
+                 {{user.score|escape}} 
+            </div>
+        </div>
+
+
+    </div>
 </div>

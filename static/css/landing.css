@@ -1,12 +1,7 @@
-@font-face {
- font-family: monaco;
- src: url("/font/MONACO.TTF") /* TTF file for CSS3 browsers */
-}
-
 body {
     color: yellow;
-    background: url("/images/bg_dark.png") center top repeat;
-    font-family: monaco, monospace;
+    background: #251f21 url("/images/bg_dark.png") center top repeat;
+    font-family: Helvetica, Arial;
     text-align: center;
     height: 100%;
     width: 100%;

@@ -1,8 +1,30 @@
 #result_page {
     font-size: 1.5em;
     text-align: center;
-    margin-top: 8%;
+    margin-top: 175px;
 }
 
+#result_page p {
+    text-indent: 0px;
+}
+
+#ranking {
+    background: url("/images/bg_blue.png") center top repeat;
+    border: 5px solid #1478f1;
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#ranking h2  {
+    font-size: 1.7em;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+#ranking p {
+    margin-left: 20px;
+    text-indent: 0px;
+}
 
 

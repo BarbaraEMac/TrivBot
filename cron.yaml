@@ -15,3 +15,7 @@ cron:
    url: /cron/monthlyReset
    schedule: 1 of month 01:00
    timezone: America/Toronto
+ - description: Reset Played Flags
+   url: /cron/playedFlagReset
+   schedule: every mon,tue,wed,thu,fri 00:02
+   timezone: America/Toronto

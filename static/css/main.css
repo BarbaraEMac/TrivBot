@@ -7,19 +7,9 @@
  src: url("/font/SanitariumBB.ttf") /* TTF file for CSS3 browsers */
 }
 
-@font-face {
- font-family: monaco;
- src: url("/font/MONACO.TTF") /* TTF file for CSS3 browsers */
-}
-
-@font-face {
- font-family: monaco;
- src: url("/font/MONACO.eot") /* EOT file for IE */
-}
-
-body {
-    font-family: monaco, monospace;
-    background: url("/images/back.png") center top repeat;
+html, body, #content {
+    font-family: Helvetica, Arial;
+    background: #4D4242 url("/images/back.png") center top repeat;
     height: 100%;
     width: 100%;
     color: yellow;
@@ -28,6 +18,7 @@ body {
 
 h1, h2, h3 {
     font-family: sanitarium, monospace;
+    color: yellow;
 }
 
 h2 {
@@ -37,49 +28,55 @@ h2 {
     font-size: 2.7em;
     text-align: center;
     text-shadow: 5px 5px 5px black;
+    color: yellow;
+}
+
+a {
+    color: yellow;
+    text-decoration: none;
+
+}
+
+button { 
+    background-color: transparent;
+    border: 0px;
+
+    font-family: sanitarium, monospace;
+    font-size: 1.5em;
+    color: yellow;
+    text-shadow: 5px 5px 5px black;
+}
+ul#nav_bar {
+    float: right;
+    margin-top: 7px;
+    margin-bottom: 0px;
+}
+ul#nav_bar>li {
+    display: inline;
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+ul#nav_bar>li>a {
+    font-family: sanitarium;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+#nav_bar img {
+    height: 30px;
+}
+
+#nav_bar img:hover {
+    border: none;
+    box-shadow: 3px 3px 4px #1478f1;
 }
 
 #corner_logo {
     position: fixed;
     top: 0%;
-    left: 0%;
-    height: 45px;
-}
-
-#question_img {
-    position: fixed;
-    top: 1%;
-    right: 25%; 
-    border: none;
-    height: 30px;
-}
-
-#account_img {
-    border: none;
-    position: fixed;
-    top: 1%;
-    right: 15%;
-    height: 30px;
-}
-
-#about_img {
-    border: none;
-    position: fixed;
-    top: 1%;
-    right: 7%;
-    height: 30px;
-}
-
-#logout {
-    position: fixed;
-    top: 2%;
-    right: 0.5%;
-    height: 20px;
-}
-
-#question_img:hover, #logout:hover, #account_img:hover, #about_img:hover {
-    border: none;
-    box-shadow: 3px 3px 4px yellow;
+    left: 10px;
+    height: 42px;
 }
 
 .left {
@@ -93,22 +90,28 @@ h2 {
 }
 
 #header{
+    min-width: 960px;
     background: url("/images/bg_dark.png") center top repeat;
     position: fixed;
     top: 0px;
     left: 0px;
     height: 45px;
     width: 100%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
-
 #footer {
+    min-width: 960px;
     background: url("/images/bg_dark.png") center top repeat;
     position: fixed;
     bottom: 0px;
-    left: 0px;
+    left: 150px;
+    right: 150px;
     height: 35px;
-    width: 100%;
+    font-size: 1.0em;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 #footer a {
@@ -118,27 +121,23 @@ h2 {
 
 #powered_link {
     position: fixed;
-    right: 1%;
-    bottom: 2%;
-    font-size: 0.8em;
+    right: 170px;
+    bottom: 8px;
 }
 
 #challenge_link { 
     position: fixed;
-    width: 80%;
-    left: 1%;
-    bottom: 1%;
-    font-size: 0.8em;
-}
-
-#challenge_link img {
-    border: none;
-    position: fixed;
-    bottom: 1%;
-    height: 4%;
+    left: 170px;
+    bottom: 6px;
 }
 
 #challenge_link form {
+}
+
+#challenge_link img {
+    height: 25px;
+    bottom: 0px;
+    margin-bottom: -5px;
 }
 
 #challenge_link img:hover {
@@ -147,20 +146,28 @@ h2 {
 }
 
 #invite {
-    width: 20%;
+    width: 200px;
     background: url("/images/bg_dark.png") center top repeat;
-
+    font-size: 1.1em;
     color: yellow;
-    font-size: 1.0em;
 }
 
-button { 
-    margin-bottom: 10px;
+#challenge_link button {
+    position: fixed;
+    margin-bottom: 0px;
+    left: 490px;
+    bottom: 0px;
     background-color: transparent;
     border: 0px;
 
     font-family: sanitarium, monospace;
-    font-size: 1.5em;
-    color: yellow;
+    font-size: 2.3em;
+    color: #0e68f5;
     text-shadow: 5px 5px 5px black;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    font-family: Helvetica, Arial;
+    text-shadow: 2px 2px 2px black;
 }

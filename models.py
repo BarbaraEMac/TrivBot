@@ -22,6 +22,8 @@ class User( db.Model ):
     num_correct  = db.IntegerProperty( default = 0 )
     num_wrong    = db.IntegerProperty( default = 0 )
     num_pass     = db.IntegerProperty( default = 0 )
+    messages     = db.StringListProperty ( default = '' )
+    place        = db.IntegerProperty( default = 1 )
 
     @staticmethod
     def get_by_uuid( uuid ):
@@ -42,6 +44,8 @@ class User( db.Model ):
         return user
 
     def update_score( self, question, ans ):
+        prev_place = self.get_place()
+        
         s = 0
         if ans == PASS:
             s = 1
@@ -58,6 +62,11 @@ class User( db.Model ):
         
         self.score += s
         self.put()
+
+        new_place = self.get_place()
+
+        if new_place < prev_place:
+            self.add_message('You just overtook someone and scored place #%s' % new_place)
 
         question.put()
 
@@ -90,6 +99,10 @@ class User( db.Model ):
             if self.first_name in m and self.last_name[0] in m:
                 return m.split('.')[0]
 
+    def add_message( self, msg ):
+        self.messages.append( '%s: %s' % (datetime.date( datetime.today() ) .strftime( '%a %B %d' ), msg) )
+        self.put()
+
 # end User
 
 class Question( db.Model ):
@@ -106,7 +119,8 @@ class Question( db.Model ):
     num_correct = db.IntegerProperty( default = 0 )
     num_wrong   = db.IntegerProperty( default = 0 )
     num_pass    = db.IntegerProperty( default = 0 )
-
+    submitter   = db.ReferenceProperty( User, default = None )
+    
     def is_correct( self, ans ):
         if self.answer == ans:
             return True
@@ -129,6 +143,22 @@ def get_question( ):
     q = Question.all().filter('state = ', 'in_use').get()
     return q
 
+def get_unapproved_question( ):
+    q = Question.all().filter('state = ', 'not_approved').get()
+    return q
+
+def get_unapproved_question_count( ):
+    q = Question.all().filter('state = ', 'not_approved').count()
+    return q 
+
+def get_approving_question( ):    
+    q = Question.all().filter('state = ', 'approving').get()
+    return q
+
+def get_questions_with_submitters( ):    
+    q = Question.all().filter('submitter != ', 'None')
+    return q
+
 # end Question
 
 
@@ -137,9 +167,13 @@ class Troupe( db.Model ):
     num_members = db.IntegerProperty( default = 0 )
     started     = db.DateProperty( auto_now_add = True )
 
+    def get_members( name ):
+        return User.all().filter( 'troupe =', self )
+    
     @staticmethod
     def create_troupe( name ):
-        troupe = Troupe( key_name = name, name = name )
+        
+        troupe = Troupe( key_name = name.capitalize(), name = name.capitalize() )
         troupe.put()
         
         return troupe
@@ -172,7 +206,7 @@ class Troupe( db.Model ):
 
     def get_memberlist( self ):
         users = User.all()
-        tmp = []
+        tmp   = []
         logging.info("COUNT %d" % users.count())
 
         # Build list of everyone in this troupe

@@ -1,31 +1,55 @@
-<div id="result_page">
-    <h1> Results </h1>
+<div id="result_page" class="prepend-top last">
+    <div class="container">
+        <div class="span-14 append-2">
+            <center>
+            <h1> Results </h1>
+            <p>
+            {% if already_played %}
+                You've already played today!</p>
+                <p>Please come back tomorrow to play again.</p>
+                <p>Today's question is <br />"{{question|escape}}" <br />and the answer is <br />"{{answer|escape}}".</p>
+                    
+                <a href="http://twitter.com/share?url=http%3A%2F%2Fwww.trivbot.com&amp;text=Tried&nbsp;to&nbsp;cheat&nbsp;and&nbsp;answer&nbsp;today%27s&nbsp;question&nbsp;again&nbsp;on&nbsp;TrivBot.&nbsp;Can&nbsp;you&nbsp;blame&nbsp;me%3F&nbsp;A&nbsp;wild&nbsp;CHALLENGE&nbsp;appears%21&nbsp;Beat&nbsp;it&nbsp;at%3A&amp;counturl=http%3A%2F%2Fwww.trivbot.com" class="twitter-share-button">Tweet</a>
 
-    <p>
-    {% if already_played %}
-        You've already played today!</p>
-        <p>Please come back tomorrow to play again.</p>
-        <p>Today's question is <br />"{{question|escape}}" <br />and the answer is <br />"{{answer|escape}}".</p>
-
-    {% else %}
-
-        {% ifequal q_score 2 %}
-            Correct! You earned {{q_score|escape}} points.
-        {% else %}
-            {% ifequal q_score 1 %}
-                Hey, at least you didn't <b>lose</b> any points. You can do better, though. 
             {% else %}
-                Too bad! Better luck next time. You've lost 1 point.
-            {% endifequal %}
-            </p><p>
+                {% ifequal q_score 2 %}
+                    Correct! You earned {{q_score|escape}} points.
+                {% else %}
+                    {% ifequal q_score 1 %}
+                        Hey, at least you didn't <b>lose</b> any points. You can do better, though. 
+                    {% else %}
+                        Too bad! Better luck next time. You've lost 1 point.
+                    {% endifequal %}
+                    </p><p>
 
-            The correct answer was "{{answer|escape}}".
-        
-        {% endifequal %}
+                    The correct answer was "{{answer|escape}}".
+                
+                {% endifequal %}
 
-    </p>
+            </p>
+                <p>Your total score for this month is {{score|escape}}.</p>
+              
+                {% ifequal q_score 2 %}
+                    <a
+                    href="http://twitter.com/share?url=http%3A%2F%2Fwww.trivbot.com&amp;text=Score%21&nbsp;Answered&nbsp;today%27s&nbsp;question&nbsp;right&nbsp;on&nbsp;TrivBot&nbsp;and&nbsp;earned&nbsp;2&nbsp;&nbsp;&nbsp;points%21&nbsp;Think&nbsp;you%27re&nbsp;smarter%3F&nbsp;Join&nbsp;me&nbsp;at%3A&amp;counturl=http%3A%2F%2Fwww.trivbot.com" class="twitter-share-button">Tweet</a>
+                {% else %}
+                    {% ifequal q_score 1 %}
+                        <a href="http://twitter.com/share?url=http%3A%2F%2Fwww.trivbot.com&amp;text=Wussed&nbsp;out&nbsp;on&nbsp;TrivBot&nbsp;today&nbsp;and&nbsp;passed.&nbsp;Question&nbsp;wasn%27t&nbsp;even&nbsp;that&nbsp;hard%21&nbsp;Can&nbsp;you&nbsp;beat&nbsp;me%3F&nbsp;Join&nbsp;me&nbsp;at%3A&amp;counturl=http%3A%2F%2Fwww.trivbot.com" class="twitter-share-button">Tweet</a>
+                    {% else %}
+                        <a href="http://twitter.com/share?url=http%3A%2F%2Fwww.trivbot.com&amp;text=Bummer%21&nbsp;Answered&nbsp;today%27s&nbsp;question&nbsp;wrong&nbsp;on&nbsp;TrivBot.&nbsp;Was&nbsp;it&nbsp;hard%3F&nbsp;Can&nbsp;you&nbsp;beat&nbsp;me%3F&nbsp;You%27ve&nbsp;been&nbsp;challenged&nbsp;at%3A&amp;counturl=http%3A%2F%2Fwww.trivbot.com" class="twitter-share-button">Tweet</a>
+                    {% endifequal %}
+                {% endifequal %}
+            {% endif %}
+            </center>
+        </div>
 
-    <p>Your total score for this month is {{score|escape}}.</p>
-    
-    {% endif %}
+        <div class="span-7 last">
+            <div id="ranking">
+                <h2>Troupe "{{user.troupe.name|escape}}"<br /> Top Scorers</h2>
+                {% for m in troupe_mates %}
+                     <p>{{m|escape}} </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>

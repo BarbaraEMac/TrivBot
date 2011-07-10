@@ -1,18 +1,36 @@
-<div id="first_account_page">
-
-    <img id="welcome_img" src="/images/welcome.png"> </img>
+<div id="first_account_page" class="last">
     
-    <p>
-        Beyond embarking on your quest to outwit your friends, <br />
-        please enter some information about yourself!
-    </p>
+    <div class="container">
+        <div id="first" class="prepend-4 span-16 append-4 last">
+            <img alt="Welcome!" id="welcome_img" src="/images/welcome.png"></img>
+            <p>
+                Before outwitting your friends, please enter some information about yourself! <br />
+                This information will only be used within TrivBot.
+            </p>
 
-    <form id="first_account_form" name="account_form" action="/updateAccount" method="post">
-        First Name: <input type="text" value="{{user.first_name|escape}}" id="first_name"></input><br /><br />
-        Last Name : <input type="text" value="{{user.last_name|escape}}" id="last_name"></input><br /><br />
-        Preferred Email: <input type="text" value="{{user.email|escape}}" id="email"></input><br /><br />
-    </form>
-        
-    <button id="save" onClick="updateAccount( true );"> Save! </button>
+            <form id="first_account_form" name="account_form" action="/updateAccount" method="post">
+                <table>
+                    <tr>
+                    <td> First Name: </td>
+                    <td> <input type="text" value="{{user.first_name|escape}}" id="first_name"></input> </td>
+                    </tr> <tr>
+                    <td> Last Name : </td>
+                    <td> <input type="text" value="{{user.last_name|escape}}" id="last_name"></input> </td>
+                    </tr> <tr>
+                    <td> Preferred Email: </td>
+                    <td> <input type="text" value="{{user.email|escape}}" id="email"></input> </td>
+                    </tr> <tr>
+                    <td> Troupe: </td>
+                    <td> <input type="text" value="Know your troupe? (optional)" id="troupe_1" onFocus="clear_me(this);"></input> </td>
+                    </tr>
+                </table>
+            </form>
+            <br />
 
+            <a href="http://twitter.com/share?url=http%3A%2F%2Fwww.trivbot.com&amp;text=1&nbsp;click&nbsp;away&nbsp;from&nbsp;entering&nbsp;trivia&nbsp;heaven%21&nbsp;2&nbsp;clicks&nbsp;away&nbsp;from&nbsp;beating&nbsp;all&nbsp;my&nbsp;friends%21&nbsp;Can&nbsp;I&nbsp;beat&nbsp;you&nbsp;too%3F&nbsp;Join&nbsp;me&nbsp;at%3A&amp;counturl=http%3A%2F%2Fwww.trivbot.com" class="twitter-share-button">Tweet</a>
+            <br />
+
+            <button id="save" onClick="updateAccount( true );"><img alt="Save!" src="/images/save.png"> </img></button>
+        </div>
+    </div>
 </div>

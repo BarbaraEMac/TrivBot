@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import logging
+import time
 
 from google.appengine.api import taskqueue
 from google.appengine.ext import webapp
@@ -22,6 +23,15 @@ class SendEmailHandler( URIHandler ):
                 taskqueue.add( queue_name = 'dailyEmailQueue', 
                                url        = '/queue/dailyEmail',
                                params     = {'uuid' : u.uuid} )
+
+class ResetPlayedFlagHandler( URIHandler ):
+    
+    def get( self ):
+        users = User.all()
+        for u in users:
+            taskqueue.add( queue_name = 'playedFlagReset', 
+                           url        = '/queue/playedFlagReset',
+                           params     = {'uuid' : u.uuid} )
 
 class UpdateQuestionHandler( URIHandler ):
     
@@ -87,11 +97,9 @@ class MonthlyResetHandler( URIHandler ):
         for u in users:
             # Make sure they played this month.
             if u.get_days_played() > 0:
-                time.sleep(10)
-                Emailer.monthlySummary( u )
-            
-            u.reset()
-
+                taskqueue.add( queue_name = 'dailyEmailQueue', 
+                               url        = '/queue/monthlySummary',
+                               params     = {'uuid' : u.uuid} )
 
 
 ##### Call Handler #####
@@ -100,6 +108,7 @@ application = webapp.WSGIApplication([
                                       ('/cron/clearTroupes', ClearTroupeHandler),
                                       ('/cron/monthlyReset', MonthlyResetHandler),
                                       ('/cron/sendEmails', SendEmailHandler),
+                                      ('/cron/playedFlagReset', ResetPlayedFlagHandler),
                                       ('/cron/updateQuestion', UpdateQuestionHandler),
 										], debug=True)
 def main():

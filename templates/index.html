@@ -8,6 +8,8 @@
         <meta name="keywords" content="trivia, daily trivia, daily trivia questions, email trivia, trivbot,
         triviabot, triv bot, trivia bot, trivia robot, weekly trivia, monthly trivia, social trivia" />
         
+        <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+        
         <script type="text/javascript">
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', 'UA-23344375-2']);
@@ -19,21 +21,47 @@
           })();
         </script>
 
-        <link rel="stylesheet" href="css/main.css" />
-        <link rel="stylesheet" href="css/{{CSS_FILE|escape}}.css" />
-    
+
+        <link rel="stylesheet" type="text/css" href="css/blueprint/ie.css" />
+        <link rel="stylesheet" type="text/css" href="css/blueprint/print.css" media="print" />
+        <link rel="stylesheet" type="text/css" href="css/blueprint/screen.css" />
+        <link rel="stylesheet" type="text/css" href="css/blueprint/src/grid.css" />
+        <link rel="stylesheet" type="text/css" href="css/blueprint/src/forms.css" />
+        <link rel="stylesheet" type="text/css" href="css/blueprint/src/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/blueprint/src/typography.css" />
+
+        <link rel="stylesheet" type="text/css" href="css/blueprint/plugins/fancy-type/screen.css" media="screen, projection" />
+
+
+        <link rel="stylesheet" type="text/css" href="js/jquery-ui/css/ui-lightness/jquery-ui-1.8.13.custom.css" />
+        
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/{{CSS_FILE|escape}}.css" />
+        
         <script src="js/main.js"></script>
         <script src="js/{{JS_FILE|escape}}.js"></script>
         <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui/js/jquery-ui-1.8.13.custom.min.js"></script>
+
     </head>
 
     <body onload="colourTitle();">
         <div id="header">
+
             <a href="/"><img id="corner_logo" src="/images/logo_no.png"></img></a>
-            <a id="question_link" href="/question"> <img id="question_img" src="/images/today_question.png"></img></a>
-            <a id="account_link" href="/account" ><img id="account_img" src="/images/account.png"></img></a>
-            <a id="about_link" href="/about"><img id="about_img" src="/images/about.png"></img></a>
-            <a onClick="foo();"><img id="logout" src="/images/logout.png"></img></a>
+            
+            <ul id='nav_bar'>
+                <li><a href='/question'><img id="question_img" src='/images/today_question.png' /></a></li>
+                <li><a href='/account'><img id="account_img" src='/images/account.png' /></a></li>
+                <li><a href='/about'><img id="about_img" src='/images/about.png' /></a></li>
+                <li><a href='#' onClick="foo(); return false;"><img src='/images/logout.png' /></a></li>
+                <!--
+                <li><a href="/question" id="question_link">Today's Question</a></li>
+                <li><a href="/account" id="account_link">Account</a></li>
+                <li><a href="/about" id="about_link">About</a></li>
+                <li><a href="#" id="logout_link" onClick="foo(); return false;">Logout</a></li>
+                -->
+            </ul>
         </div>
 
         <div id="content">
@@ -45,14 +73,42 @@
                 <form name="invite_form" action="/invite" method="post">
                     <object>Challenge A Friend:</object> 
                     <input type="text" id="invite" onKeyPress="return maybeSubmit(this, event);" value="daily.triv.bot@gmail.com"> </input>
-                    <img src="images/challenge.png" onClick="invite( );"> </img>
                 </form>
+                
+                <button onClick="invite();" value="Challenge!"><img src="/images/challenge.png"></img></button>
             </div>
 
             <div id="powered_link">
                 <a href="http://www.getwillet.com">Powered by Willet</a>
             </div>
+
         </div>
+
+      <script>
+        {% if show_messages %}
+            $(function() {
+                $( "#dialog-message" ).dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    },
+                    height: 'auto',
+                    width: 650
+                });
+            });
+        {% endif %}
+        </script>
+
+        <div id="dialog-message" title="Messages from the 'Bot" style="display: none; font-size: 1.1em;">
+            {% for foooo in msgs %}
+                <center>
+                <p style="border: 1px solid #1478f1; border-radius: 5px; padding: 5px 5px 5px 5px;" > <!--<span class="ui-icon
+                ui-icon-circle-plus" style="float: left; margin:0 7px 50px 0;"></span>--> {{foooo}} </p>
+                </center>
+            {% endfor %}
+        </div>
+
     </body>
 </html>
-

@@ -1,8 +1,10 @@
-<div id="about_page">
-    <div id="how_div">
-        <h2>How to Play</h2>
-        <div id="text">
-            <ul>
+<div id="about_page" class="prepend-top last">
+    <div class="container">
+        <div id="text" class="span-15">
+            
+            <h2>How to Play</h2>
+            
+            <ul id="list">
                 <li>Join your company's Troupe on the 'Account' page. </li>
                     Troupes are 'trivia groups'. Members of a Troupe are your competitors!<br/ >
                     Enter your company's name in the 'Troupe' box and click 'Switch'!<br />
@@ -11,19 +13,26 @@
                 <li class="indent"> Answer correctly to earn 2 points.</li><br />
                 <li class="indent"> Answer incorrectly to lose 1 point.</li><br />
                 <li class="indent"> Question too difficult? You can 'Pass' to earn 1 point.</li><br />
-                <li>Each month, the highest scorer in each Troupe wins <strong>a cut of the earnings</strong>!</li><br />
+                <li>Each month, the highest scorer in each Troupe wins <strong>all the bragging rights</strong>!</li><br />
                 <li><em>To get started, click on <a href="/question">Today's Question</a>!</em></li>
             </ul>
         </div>
-    </div>
-    
-    <div id="who_div">
-        <h2>Earn Bonus Points</h2>
-            <p>Want to add a trivia question to the site and gain 3 points? <br /> Submit one here! </p>
+        
+        <div id="bonus_div" class="span-8 last">
+            <h2>Earn Bonus Points</h2>
+
+            Want to add a trivia question to the site<br /> and gain 3 points? <br /> Submit one here!
 
             <form name="feedback_form" action="/submitFeedback" method="post">
-                <p><textarea id="feedback"></textarea></p>
+                <input type="text" id="question" value="Question" onFocus="maybeClear(this);" />
+                <input type="text" id="category" value="Category" onFocus="maybeClear(this);" />
+                <input type="text" id="difficulty" value="Difficulty (Out of 3)" onFocus="maybeClear(this);" />
+                <input type="text" id="correct" value="Correct Answer" onFocus="maybeClear(this);" />
+                <input type="text" id="incorrect_1" value="Incorrect Answer 1" onFocus="maybeClear(this);" />
+                <input type="text" id="incorrect_2" value="Incorrect Answer 2" onFocus="maybeClear(this);" />
+                <input type="text" id="incorrect_3" value="Incorrect Answer 3" onFocus="maybeClear(this);" />
             </form>
-            <button id="submit" onClick="submitFeedback(  );"> Submit! </button>
+            <button id="submit" onClick="submitFeedback()"> Submit! </button>
+        </div>
     </div>
 </div>

@@ -34,12 +34,20 @@ handlers:
   script: queue.py
   login: admin
 
-- url: /test
-  script: main.py
+- url: /admin
+  script: admin.py
+  login: admin
+
+- url: /admin/.*
+  script: admin.py
   login: admin
 
 - url: /test/.*
-  script: main.py
+  script: admin.py
+  login: admin
+
+- url: /test
+  script: admin.py
   login: admin
 
 - url: .*
